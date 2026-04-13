@@ -130,7 +130,7 @@ def features(images,method):
 
 # evaluate methods with SVM and cross-validation
 def evaluate(name,images,y):
-    logging.info(f" EVALUATION DATASET: {name} ({len(images)} samples) ")
+    logging.info(f"EVALUATION DATASET: {name} ({len(images)} samples) ")
     rows=[]; methods=['stlbp','sylbp8','sylbp4']
     cv_scores_dict = {} 
     skf=StratifiedKFold(CONFIG['cv_folds'],shuffle=True,random_state=CONFIG['seed'])
@@ -163,7 +163,7 @@ def evaluate(name,images,y):
             with open(os.path.join(CONFIG['outdir'],f'report_svm_{name}.txt'),'w') as f: f.write(classification_report(yte,pred))
 
     t_stat, p_val = stats.ttest_rel(cv_scores_dict['stlbp'], cv_scores_dict['sylbp4'])
-    logging.info(f" StLBP vs SyLBP4 p-value: {p_val:.4f}")
+    logging.info(f"StLBP vs SyLBP4 p-value: {p_val:.4f}")
     if np.isnan(p_val) or p_val > 0.05: 
         logging.info("CONCLUSION: SyLBP4 can perfectly replace StLBP.")
     return rows
