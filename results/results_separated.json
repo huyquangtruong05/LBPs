@@ -1,0 +1,148 @@
+{
+  "results": [
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "stlbp",
+      "svm_type": "Linear",
+      "acc_mean": 0.9457627118644067,
+      "time": 3.3784658908843994,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "stlbp",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.26440677966101694,
+      "time": 3.3784658908843994,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "stlbp",
+      "svm_type": "RBF_scale",
+      "acc_mean": 0.9661016949152542,
+      "time": 3.3784658908843994,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp8",
+      "svm_type": "Linear",
+      "acc_mean": 0.9423728813559322,
+      "time": 3.39261531829834,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp8",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.2677966101694915,
+      "time": 3.39261531829834,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp8",
+      "svm_type": "RBF_scale",
+      "acc_mean": 0.9694915254237289,
+      "time": 3.39261531829834,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp4",
+      "svm_type": "Linear",
+      "acc_mean": 0.9423728813559322,
+      "time": 3.1642684936523438,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp4",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.2677966101694915,
+      "time": 3.1642684936523438,
+      "dim": 256
+    },
+    {
+      "dataset": "CKPlus48_Emotion",
+      "method": "sylbp4",
+      "svm_type": "RBF_scale",
+      "acc_mean": 0.9694915254237289,
+      "time": 3.1642684936523438,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "stlbp",
+      "svm_type": "Linear",
+      "acc_mean": 0.9952718676122931,
+      "time": 10.16316270828247,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "stlbp",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.7801418439716312,
+      "time": 10.16316270828247,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "stlbp",
+      "svm_type": "RBF_scale",
+      "acc_mean": 0.9988179669030733,
+      "time": 10.16316270828247,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp8",
+      "svm_type": "Linear",
+      "acc_mean": 1.0,
+      "time": 9.9028902053833,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp8",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.7316784869976359,
+      "time": 9.9028902053833,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp8",
+      "svm_type": "RBF_scale",
+      "acc_mean": 1.0,
+      "time": 9.9028902053833,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp4",
+      "svm_type": "Linear",
+      "acc_mean": 1.0,
+      "time": 8.932465553283691,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp4",
+      "svm_type": "RBF_g100",
+      "acc_mean": 0.7316784869976359,
+      "time": 8.932465553283691,
+      "dim": 256
+    },
+    {
+      "dataset": "CFD_Detection",
+      "method": "sylbp4",
+      "svm_type": "RBF_scale",
+      "acc_mean": 1.0,
+      "time": 8.932465553283691,
+      "dim": 256
+    }
+  ]
+}
