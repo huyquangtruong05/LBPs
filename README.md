@@ -1,91 +1,41 @@
-<!-- # Project Setup
+# Symmetric LBP (SyLBP4) – Reimplementation, Benchmarking & CNN Comparison
 
-```bash
-step 1 : Move the separately submitted datasets folder to the same level as the main_code.py file.
-step 2 : python -m venv venv
-step 3 : venv\Scripts\activate
-step 4 : pip install -r requirements.txt
-step 5 : python main_code.py
-``` -->
+## Overview
 
-# Symmetric LBP (SyLBP4) – Reimplementation & Experimental Analysis
+This notebook-based project reimplements and extends the 2024 paper **The use of the symmetric finite difference in the local binary pattern (symmetric LBP)**.
 
-This project is a full reimplementation and extended evaluation of the research paper:  
-**The use of the symmetric finite difference in the local binary pattern (symmetric LBP)**  
-(Zeinab Sedaghatjoo, Hossein Hosseinzadeh, 2024)
+The core objective is to verify whether **SyLBP4** (4-bit symmetric local binary pattern) can preserve recognition performance while drastically reducing feature size and extraction cost compared with traditional **Standard LBP (StLBP)**.
 
-The goal of this project is to reproduce the core idea of the paper, verify its mathematical claims, and evaluate whether the proposed **4-bit Symmetric Local Binary Pattern (SyLBP4)** can replace the traditional **8-bit Standard LBP (StLBP)** while significantly reducing feature dimensionality and computational cost.
+In addition to classical machine learning experiments, this project also includes a bonus deep-learning comparison:
+
+- Raw image CNN
+  n- SyLBP4 feature map + CNN/MLP pipeline
 
 ---
 
-## Project Overview
+## Implemented Descriptors
 
-Local Binary Pattern (LBP) is a classical texture descriptor widely used in:
+| Method | Idea                                    | Output Patterns |
+| ------ | --------------------------------------- | --------------- |
+| StLBP  | Compare neighbors with center pixel     | 256             |
+| SyLBP8 | Compare opposite symmetric pairs        | 256             |
+| SyLBP4 | Keep 4 independent symmetric directions | 16              |
 
-- Face Detection
-- Facial Expression Recognition
-- Texture Classification
-- Lightweight Computer Vision Systems
+### Why SyLBP4 Matters
 
-Traditional LBP compares each neighboring pixel with the center pixel, generating an **8-bit code (256 patterns)**.
-
-The paper proposes a better alternative:
-
-### Symmetric LBP (SyLBP)
-
-Instead of comparing each pixel to the center, SyLBP compares **symmetric opposite pixel pairs**:
-
-- Higher-order approximation of local gradients
-- Better mathematical formulation
-- Reduced redundancy
-- Smaller feature vectors
-
-The most important variant is:
-
-### SyLBP4
-
-Uses only **4 independent directional derivatives** instead of 8.  
-This reduces:
-
-- **256 patterns → 16 patterns**
-- **4096 features → 256 features**
-- Faster extraction
-- Lower RAM usage
-- Nearly identical classification accuracy
+- 16× smaller histogram representation (4096 → 256 in block histograms)
+- Fewer comparisons
+- Lower memory usage
+- Faster training / inference
+- Competitive accuracy
 
 ---
 
-## Implemented Methods
+## Datasets Used
 
-This project includes 3 feature extraction methods:
+## 1. CK+48 Emotion Recognition
 
-| Method | Description                               | Output Patterns |
-| ------ | ----------------------------------------- | --------------- |
-| StLBP  | Standard Local Binary Pattern             | 256             |
-| SyLBP8 | Symmetric LBP with 8 directions           | 256             |
-| SyLBP4 | Optimized Symmetric LBP with 4 directions | 16              |
-
----
-
-## Experimental Tasks
-
-### 1. Face Detection
-
-Binary classification:
-
-- Face
-- Non-face (clutter / background)
-
-**Dataset sources:**
-
-- CFD
-- CFD-MR
-- CFD-INDIA
-- Custom clutter images
-
-### 2. Facial Expression Recognition
-
-5-class emotion recognition using CK+48:
+5 classes:
 
 - Angry
 - Fear
@@ -93,70 +43,86 @@ Binary classification:
 - Sadness
 - Surprise
 
----
+## 2. CFD Face Detection
 
-## Extended Analysis Beyond the Paper
+Binary classification:
 
-This project does more than simply reproduce the paper.
+- Face
+- Non-face / Clutter
 
-### Added Experiments
+Expected folder names:
 
-#### Weakness Testing
-
-Stress-testing SyLBP4 under:
-
-- Salt & Pepper Noise
-- Gaussian Blur
-- Rotation Variance
-
-#### Statistical Validation
-
-- 5-Fold Cross Validation
-- GridSearchCV
-- Paired T-Test
-- Pearson Correlation Analysis
-
-#### Hybrid Deep Learning Bonus
-
-Compare:
-
-- CNN on raw pixels
-- SyLBP4 + MLP
-
-To test whether handcrafted descriptors still remain competitive.
+```bash
+datasets/
+├── CK_Plus/
+├── CFD/
+└── Clutter_Images/
+```
 
 ---
 
-## Key Findings
+## Main Experimental Pipeline
 
-### Massive Compression
+The notebook executes the following stages:
 
-| Method | Feature Size |
-| ------ | ------------ |
-| StLBP  | 4096         |
-| SyLBP4 | 256          |
+### A. Data Loading
 
-➡ **16× smaller**
+Custom loaders prepare images and labels from dataset folders.
 
-### Faster Extraction
+### B. Preprocessing
 
-SyLBP4 is significantly faster than Standard LBP due to fewer comparisons and smaller histograms.
+- Resize / normalize
+- Grayscale processing
+- Feature-ready image formatting
 
-### Accuracy Retention
+### C. Feature Extraction
 
-Despite compression, SyLBP4 achieves nearly identical accuracy to StLBP on both tasks.
+Implemented manually in Python:
 
-### Verified Redundancy Claim
+- Standard LBP
+- Symmetric LBP8
+- Symmetric LBP4
 
-The opposite symmetric bits are strongly negatively correlated:
+### D. Classical ML Evaluation
 
-- Pearson correlation ≈ **-0.95**
+Using SVM classifiers with cross-validation and metrics such as:
 
-This validates the paper’s claim that half of the bits are redundant.
+- Accuracy
+- Classification report
+- Confusion matrix
+- Extraction time
+
+### E. Redundancy Validation
+
+Measures correlation between opposite symmetric bits to verify the paper's redundancy claim.
+
+### F. Robustness / Weakness Analysis
+
+Stress tests SyLBP4 under:
+
+- Salt & Pepper noise
+- Gaussian blur
+- Rotation changes
+
+### G. Bonus Deep Learning Comparison
+
+Two pipelines are compared:
+
+1. Raw CNN on images
+2. SyLBP4 spatial representation + neural model
+
+### H. Visualization Dashboard
+
+The notebook exports charts such as:
+
+- Accuracy bar charts
+- Heatmaps
+- Runtime comparison
+- CNN comparison plots
 
 ---
 
-## Technologies Used
+## Technologies
 
 - Python 3.10+
 - NumPy
@@ -164,7 +130,9 @@ This validates the paper’s claim that half of the bits are redundant.
 - SciPy
 - Scikit-learn
 - Matplotlib
+- Seaborn
 - TensorFlow / Keras
+- Pandas
 
 ---
 
@@ -172,118 +140,81 @@ This validates the paper’s claim that half of the bits are redundant.
 
 ```bash
 project/
-├── main_code.py
-├── requirements.txt
+├── main.ipynb
 ├── README.md
+├── requirements.txt
 ├── datasets/
-│   ├── CK+48/
-│   ├── CFD/
-│   ├── clutter/
-├── results/
+└── results/
 ```
 
-## Installation & Setup
+---
 
-**Step 1: Download & Place Dataset Folder**  
-Download `datasets.zip` from this [link_datasets](https://drive.google.com/file/d/1m7bEnq9cGxwJ1pAGOeTudQwfpsyX_PWj/view?usp=sharing).  
-Extract the zip file and place the `datasets/` folder at the same directory level as `main_code.py`.
+## Setup & Run
 
-**Step 2: Create Virtual Environment**
+### 1. Create virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-**Step 3: Activate Environment (Windows)**
+### 2. Activate environment (Windows)
 
 ```bash
 venv\Scripts\activate
 ```
 
-**Step 4: Install Dependencies**
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**Step 5: Run Project**
+### 4. Launch Jupyter
 
 ```bash
-python main_code.py
+jupyter notebook
 ```
+
+Open `main.ipynb` and run all cells.
+
+---
 
 ## Expected Outputs
 
-After execution, the program may generate:
+Inside `results/`:
 
-- Accuracy reports
-- Confusion matrices
-- Comparison charts
-- Weakness analysis plots
-- Statistical test results
-- Hybrid model evaluation
-- Saved figures in `results/`
-
----
-
-## Why This Project Matters
-
-This project demonstrates strong understanding in:
-
-**Computer Vision**
-
-- Feature engineering
-- Texture descriptors
-- Face recognition pipelines
-
-**Machine Learning**
-
-- SVM tuning
-- Cross-validation
-- Statistical significance testing
-
-**Research Reproduction**
-
-- Re-implementing academic papers
-- Verifying claims experimentally
-- Critical analysis beyond original work
-
-**Engineering Mindset**
-
-- Optimization
-- Efficiency vs Accuracy trade-off
-- Real-world robustness testing
+- JSON result summaries
+- Accuracy plots
+- Heatmaps
+- Runtime charts
+- CNN comparison figures
+- Weakness analysis charts
 
 ---
 
-## Real-World Use Cases
+## Key Contributions
 
-SyLBP4 is suitable for:
-
-- Edge AI devices
-- Embedded cameras
-- Low-memory systems
-- Real-time face detection
-- Lightweight recognition systems
+- Reproduced an academic computer vision paper
+- Verified theoretical redundancy claims experimentally
+- Benchmarked efficiency vs accuracy trade-offs
+- Added robustness testing beyond the original paper
+- Added handcrafted vs deep learning comparison
 
 ---
 
-## Future Improvements
-
-Possible next steps:
+## Future Work
 
 - Rotation-invariant SyLBP
 - Multi-scale SyLBP
-- MB-LBP integration
-- Mobile deployment
-- Real-time webcam system
+- Real-time webcam deployment
+- Mobile / edge optimization
 - Larger benchmark datasets
 
 ---
 
 ## Authors
 
-- **Truong Quang Huy**
-- **Nguyen Bach Khoa**
+- Truong Quang Huy
+- Nguyen Bach Khoa
 
-**University of Science – VNUHCM (HCMUS)**
+University of Science – VNUHCM (HCMUS)
