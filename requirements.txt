@@ -1,5 +1,11 @@
 numpy
 matplotlib
+pandas
+seaborn
+opencv-python
 scipy
 scikit-learn
-opencv-python
+tensorflow
+ipykernel
+jupyter
+ipython

@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 # virtual environment
 venv/
+.ipynb_checkpoints/
